@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         }   // while
 
-    }   // Sync JSON TO SQLite
+    }   // ******  Sync JSON TO SQLite  *******
 
     private void deleteAllData() {
 
