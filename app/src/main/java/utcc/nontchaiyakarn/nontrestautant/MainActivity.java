@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Test Delete All Data
-        deleteAllData();
+        //deleteAllData();
 
         // Synchronize Data From JSON to SQLite
         synJSONtoSQLite();
