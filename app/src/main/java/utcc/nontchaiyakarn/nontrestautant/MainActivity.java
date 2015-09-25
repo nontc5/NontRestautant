@@ -4,8 +4,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(myPolicy);
 
 
-        // ข้อที่ 1. Sync ข้อมูลจาก Table โดยค่อยๆทำทีละ Table
+        // Sync ข้อมูลจาก Table โดยค่อยๆทำทีละ Table
         int intTimes = 0;    // จำนวนครั้ง
         while (intTimes <= 1) {
 
@@ -51,9 +62,99 @@ public class MainActivity extends AppCompatActivity {
             // Constant
             InputStream objInputStream = null;  // โหลดไปใช้ไป
             String strJSON = null;  // จะเปลี่ยน Input Stream ให้เป็น String
-            
+            String strUrlUser = "http://swiftcodingthai.com/24Sep/php_get_data_nont.php";   // URL ของไฟล์ JSON ตาราง User
+            String strURLFood = "http://swiftcodingthai.com/24Sep/php_get_data_food_master.php";    // URL ของไฟล์ JSON ตารางอาหาร
+            HttpPost objHttpPost;   // ประกาศตัวแปรไว้
+
+            // ข้อที่ 1. Create InputStream   ทำให้มันโหลดแบบ Streaming ให้ได้ก่อน
+            try {   // สิ่งที่เสี่ยงต่อการ Error ใส่ในนี้
+
+                HttpClient objHttpClient = new DefaultHttpClient();
+                if (intTimes != 1) {
+
+                    objHttpPost = new HttpPost(strUrlUser);
+
+                } else {
+
+                    objHttpPost = new HttpPost(strURLFood);
+
+                }
+
+                HttpResponse objHttpResponse = objHttpClient.execute(objHttpPost);
+                HttpEntity objHttpEntity = objHttpResponse.getEntity();
+                objInputStream = objHttpEntity.getContent();
 
 
+            } catch (Exception e) { // ถ้า Error จะเข้ามาในนี้
+
+                Log.d("Rest","InputStream ==>"+e.toString());
+
+            }
+
+
+            // ข้อที่ 2. Create strJSON     เปลี่ยนสิ่งที่เรา Streaming มาให้เป็น String
+            try {
+
+                BufferedReader objBufferedReader = new BufferedReader(new InputStreamReader(objInputStream, "UTF-8"));
+                StringBuilder objStringBuilder = new StringBuilder();   // ตัวที่ทำหน้าที่รวม
+                String strLine = null;  // ตัวแปรที่รับตัวที่ถูกตัดมา
+
+                while ((strLine = objBufferedReader.readLine())!= null ) {  // ถ้า strLine ว่างเปล่า ก็ออกจาก Loop
+
+                    objStringBuilder.append(strLine);   // มีหน้าที่คอยผูก String ไปเรื่อย ๆ
+
+
+                }   // While Loop
+                objInputStream.close();                 // ถ้าหมด ก็ไม่ต้องโหลดต่อ
+                strJSON = objStringBuilder.toString();
+
+
+            } catch (Exception e) {
+
+                Log.d("Rest", "strJSON ==> "+e.toString());
+
+            }
+
+
+
+            // ข้้อที่ 3. Update SQLite     เอา strJSON ที่ได้มา มาใส่ใน SQLite
+            try {
+
+                final JSONArray objJsonArray = new JSONArray(strJSON);
+
+                for (int i = 0; i < objJsonArray.length(); i++) {
+
+                    JSONObject object = objJsonArray.getJSONObject(i);  // เอา i มาแทนค่าตำแหน่งของ Array
+
+                    if (intTimes < 1) {
+
+                        // สำหรับ UserTABLE
+                        // ได้ String 3 ตัวสำหรับใส่ใน DB แล้ว
+                        String strUser = object.getString("User");  // User เป็น Key ใน JSON
+                        String strPassword = object.getString("Password");
+                        String strName = object.getString("Name");
+
+                        objUserTABLE.addNewUser(strUser, strPassword, strName);
+
+
+                    } else {
+
+                        // สำหรับ FoodTABLE
+                        // ได้ String 3 ตัวสำหรับใส่ใน DB แล้ว
+                        String strFood = object.getString("Food");
+                        String strSource = object.getString("Source");
+                        String strPrice = object.getString("Price");
+
+                        objFoodTABLE.addNewFood(strFood, strSource, strPrice);
+                    }
+
+                }   // วิ่งวนตามจำนวน แถวใน JSON
+
+            } catch (Exception e) {
+
+                Log.d("Rest", "Update Error ==> "+e.toString());
+
+            }
 
             intTimes += 1;  // บวกทีละ 1
 
