@@ -2,6 +2,7 @@ package utcc.nontchaiyakarn.nontrestautant;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -27,6 +28,49 @@ public class UserTABLE {
         readSqLiteDatabase = objMyOpenHelper.getReadableDatabase(); // ใช้อ่าน
 
     }   // Constructor
+
+
+    // Search หา User
+    public String[] searchUser(String strUser) {
+
+        try {
+
+            String[] strResult = null;
+            Cursor objCursor = readSqLiteDatabase.query(TABLE_USER,     //Table ตัวไหน
+                    new String[]{COLUMN_ID_USER,COLUMN_USER,COLUMN_PASSWORD,COULUMN_NAME},  //ใช้ Column ไหนบ้าง
+                    COLUMN_USER + "=?",     // ใช้ Column ไหนเป็นตัว Search
+                    new String[]{String.valueOf(strUser)},
+                    null, null, null, null);
+
+            if (objCursor != null) {
+
+                if (objCursor.moveToFirst()) {
+
+                    strResult = new String[4];  // ใส่ 4 เพราะมี 4 Column
+                    strResult[0] = objCursor.getString(0);
+                    strResult[1] = objCursor.getString(1);
+                    strResult[2] = objCursor.getString(2);
+                    strResult[3] = objCursor.getString(3);
+
+
+
+                }   // if
+            }   // if
+
+            objCursor.close();  // คืนหน่วยความจำ
+            return strResult;
+
+
+        } catch (Exception e) {
+
+            return null;
+
+        }
+
+
+        //return new String[0];
+    }
+
 
     // Update User
     public long addNewUser(String strUser, String strPassword, String strName) {

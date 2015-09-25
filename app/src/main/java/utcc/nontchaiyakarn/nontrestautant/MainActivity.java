@@ -1,5 +1,7 @@
 package utcc.nontchaiyakarn.nontrestautant;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -70,17 +72,60 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            // ถ้ากรอกครบ
-
+            // ถ้ากรอกครบ  No Space
+            checkUser();
 
         }
 
     }   // ClickLogin
 
+    private void checkUser() {
+
+        try {
+
+            String[] strMyResult = objUserTABLE.searchUser(userString); // Check Username
+
+            if (passwordString.equals(strMyResult[2])) {
+
+                welcome(strMyResult[3]);
+
+
+            } else {
+
+                myAlertDialop("Password False","Please try again Password False !!!!!!!!");
+
+            }
+
+        } catch (Exception e) {
+
+            myAlertDialop("No User", "No \""+userString+ "\" in my Database");
+
+        }
+
+    }   // Check User
+
+    private void welcome(String strName) {
+
+
+
+    }   //welcome
+
     private void myAlertDialop(String strTitle, String strMessage) {
 
-        
+        AlertDialog.Builder objBuilder = new AlertDialog.Builder(this);
+        objBuilder.setIcon(R.drawable.danger);  // แสดงรูป Danger ใน Alert Dialog
+        objBuilder.setTitle(strTitle);
+        objBuilder.setMessage(strMessage);
+        objBuilder.setCancelable(false);
+        objBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
+                dialogInterface.dismiss();  //กดปุ่ม OK แล้วให้ Dialog หายไป
+
+            }
+        });
+        objBuilder.show();
     }   // My Alert
 
     private void bindWidget() {
