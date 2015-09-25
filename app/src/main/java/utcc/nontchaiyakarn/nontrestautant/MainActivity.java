@@ -2,6 +2,7 @@ package utcc.nontchaiyakarn.nontrestautant;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -104,8 +105,31 @@ public class MainActivity extends AppCompatActivity {
 
     }   // Check User
 
-    private void welcome(String strName) {
+    private void welcome(final String strName) {
 
+        AlertDialog.Builder objBuilder = new AlertDialog.Builder(this);
+        objBuilder.setIcon(R.drawable.restaurant);
+        objBuilder.setTitle("Welcome");
+        objBuilder.setMessage("Welcome " + strName);
+        objBuilder.setCancelable(false);        // ถ้าต้องการปิด Popup จะกดไม่ได้ ต้องกด OK อย่างเดียว
+        objBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // ถ้ามีกา Click จะให้ทำอะไร
+
+                // Intent to Order Activitites  เมื่อคลิกแล้วจะให้ไปี่หน้า Order Activitites
+                Intent objIntent = new Intent(MainActivity.this, OrderActivity.class);
+                objIntent.putExtra("Name", strName);    //Name เป็น Key ที้่ใช้ในการโยน  Data ไปอีกหน้า
+                startActivity(objIntent);
+
+
+                dialogInterface.dismiss();
+                finish();   // เมื่อกด Undo ที่โทรศัพท์ ให้ออกจาก App เลย ต้อง Login ใหม่
+
+
+            }
+        });
+        objBuilder.show();
 
 
     }   //welcome
