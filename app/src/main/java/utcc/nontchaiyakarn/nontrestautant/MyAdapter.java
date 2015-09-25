@@ -47,7 +47,7 @@ public class MyAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         LayoutInflater objLayoutInflater = (LayoutInflater) objContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view1 = objLayoutInflater.inflate(R.layout.food_listview, viewGroup);
+        View view1 = objLayoutInflater.inflate(R.layout.food_listview, viewGroup,false);
 
         // for title รายชื่ออาหาร
         TextView foodTextView = (TextView) view1.findViewById(R.id.textView2);
