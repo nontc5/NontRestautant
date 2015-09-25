@@ -5,6 +5,8 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,12 +25,21 @@ public class MainActivity extends AppCompatActivity {
     // Explicit
     private UserTABLE objUserTABLE;
     private foodTABLE objFoodTABLE;
+    private EditText userEditText, passwordEditText;
+    private String userString, passwordString;  // เปลี่ยนค่าจากใน Textbox แล้วมาเป็ฯไว้ในตัวแปรนี้
+    
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        
+        // Bind Widget เอาตัวแปรมาผูกกับ Widget
+        bindWidget();
+        
+        
 
         // Create and Connect SQLite
         createAndConnected();
@@ -45,6 +56,41 @@ public class MainActivity extends AppCompatActivity {
         synJSONtoSQLite();
 
     }   // onCreate
+
+
+    public void clickLogin(View view) {
+
+        userString = userEditText.getText().toString().trim();  // Trim ตัดช่องว่างหน้าหลัง ออกอัตโนมัติ
+        passwordString = passwordEditText.getText().toString().trim();
+
+        if (userString.equals("") || passwordString.equals("") ) {  //ถ้ากรอกไม่ครบ
+
+            // ถ้ามันว่างเปล่า (กรอกไม่ครบ)
+            myAlertDialop("มีช่องว่าง","กรุณากรอกให้ครบทุกช่อง");
+
+        } else {
+
+            // ถ้ากรอกครบ
+
+
+        }
+
+    }   // ClickLogin
+
+    private void myAlertDialop(String strTitle, String strMessage) {
+
+        
+
+    }   // My Alert
+
+    private void bindWidget() {
+
+        userEditText = (EditText) findViewById(R.id.editText);
+        passwordEditText = (EditText) findViewById(R.id.editText2);
+
+
+
+    }
 
     private void synJSONtoSQLite() {
 
