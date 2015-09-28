@@ -26,5 +26,6 @@
             android:text="New Text"
             android:id="@+id/textView3"
             android:textSize="@dimen/price" />
+
     </LinearLayout>
 </LinearLayout>
