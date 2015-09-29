@@ -64,52 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickLogin(View view) {
 
-        userString = userEditText.getText().toString().trim();  // Trim ตัดช่องว่างหน้าหลัง ออกอัตโนมัติ
-        passwordString = passwordEditText.getText().toString().trim();
-
-        if (userString.equals("") || passwordString.equals("") ) {  //ถ้ากรอกไม่ครบ
-
-            // ถ้ามันว่างเปล่า (กรอกไม่ครบ)
-            myAlertDialop("มีช่องว่าง","กรุณากรอกให้ครบทุกช่อง");
-
-        } else {
-
-            // ถ้ากรอกครบ  No Space
-            checkUser();
-
-        }
+        // Intent to Order Activitites  เมื่อคลิกแล้วจะให้ไปี่หน้า Order Activitites
+        Intent objIntent = new Intent(MainActivity.this, OrderActivity.class);
+        //objIntent.putExtra("Name", strName);    //Name เป็น Key ที้่ใช้ในการโยน  Data ไปอีกหน้า
+        startActivity(objIntent);
 
     }   // ClickLogin
 
-    private void checkUser() {
-
-        try {
-
-            String[] strMyResult = objUserTABLE.searchUser(userString); // Check Username
-
-            if (passwordString.equals(strMyResult[2])) {
-
-                welcome(strMyResult[3]);
-
-
-            } else {
-
-                myAlertDialop("Password False","Please try again Password False !!!!!!!!");
-
-            }
-
-        } catch (Exception e) {
-
-            myAlertDialop("No User", "No \""+userString+ "\" in my Database");
-
-        }
-
-    }   // Check User
 
     private void welcome(final String strName) {
 
         AlertDialog.Builder objBuilder = new AlertDialog.Builder(this);
-        objBuilder.setIcon(R.drawable.restaurant);
+        objBuilder.setIcon(R.drawable.danger);
         objBuilder.setTitle("Welcome");
         objBuilder.setMessage("Welcome " + strName);
         objBuilder.setCancelable(false);        // ถ้าต้องการปิด Popup จะกดไม่ได้ ต้องกด OK อย่างเดียว
@@ -154,9 +120,6 @@ public class MainActivity extends AppCompatActivity {
     }   // My Alert
 
     private void bindWidget() {
-
-        userEditText = (EditText) findViewById(R.id.editText);
-        passwordEditText = (EditText) findViewById(R.id.editText2);
 
 
 
