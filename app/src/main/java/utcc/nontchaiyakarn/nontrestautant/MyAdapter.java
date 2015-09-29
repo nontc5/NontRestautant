@@ -19,18 +19,18 @@ public class MyAdapter extends BaseAdapter{
 
 
     private Context objContext;
-    private String[] iconStrings, foodStrings, priceStrings;    // ตามจำนวนวัตถุที่อยู่ใน List นั้น ๆ
+    private String[] imgStrings, subjectStrings, typeStrings;    // ตามจำนวนวัตถุที่อยู่ใน List นั้น ๆ
 
-    public MyAdapter(Context objContext, String[] iconStrings, String[] foodStrings, String[] priceStrings) {
+    public MyAdapter(Context objContext, String[] imgStrings, String[] subjectStrings, String[] typeStrings) {
         this.objContext = objContext;
-        this.iconStrings = iconStrings;
-        this.foodStrings = foodStrings;
-        this.priceStrings = priceStrings;
+        this.imgStrings = imgStrings;
+        this.subjectStrings = subjectStrings;
+        this.typeStrings = typeStrings;
     }   // Constructor
 
     @Override
     public int getCount() { // จะวน Loop กี่ครั้ง
-        return foodStrings.length;
+        return subjectStrings.length;
     }
 
     @Override
@@ -51,17 +51,17 @@ public class MyAdapter extends BaseAdapter{
 
         // for title รายชื่ออาหาร
         TextView foodTextView = (TextView) view1.findViewById(R.id.textView2);
-        foodTextView.setText(foodStrings[i]);
+        foodTextView.setText(subjectStrings[i]);
 
 
         // for price
         TextView priceTextView = (TextView) view1.findViewById((R.id.textView3));
-        priceTextView.setText(priceStrings[i]);
+        priceTextView.setText(typeStrings[i]);
 
 
         //for IMAGE
         ImageView iconImageView = (ImageView) view1.findViewById(R.id.imageView2);
-        Picasso.with(objContext).load(iconStrings[i]).resize(120,120).into(iconImageView);
+        Picasso.with(objContext).load(imgStrings[i]).resize(120,120).into(iconImageView);
 
 
 

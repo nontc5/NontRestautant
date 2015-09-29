@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     // Explicit
     private UserTABLE objUserTABLE;
     private foodTABLE objFoodTABLE;
+    private DataTABLE objDataTABLE;
     private EditText userEditText, passwordEditText;
     private String userString, passwordString;  // เปลี่ยนค่าจากใน Textbox แล้วมาเป็ฯไว้ในตัวแปรนี้
     
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             String strJSON = null;  // จะเปลี่ยน Input Stream ให้เป็น String
             String strUrlUser = "http://swiftcodingthai.com/24Sep/php_get_data_nont.php";   // URL ของไฟล์ JSON ตาราง User
             String strURLFood = "http://swiftcodingthai.com/24Sep/php_get_data_food_master.php";    // URL ของไฟล์ JSON ตารางอาหาร
+            String strURLData = "http://nontc5.utcc-ict.com/AdmissionNews/JSONGetData.php";
             HttpPost objHttpPost;   // ประกาศตัวแปรไว้
 
             // ข้อที่ 1. Create InputStream   ทำให้มันโหลดแบบ Streaming ให้ได้ก่อน
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
 
-                    objHttpPost = new HttpPost(strURLFood);
+                    objHttpPost = new HttpPost(strURLData);
 
                 }
 
@@ -256,11 +258,11 @@ public class MainActivity extends AppCompatActivity {
 
                         // สำหรับ FoodTABLE
                         // ได้ String 3 ตัวสำหรับใส่ใน DB แล้ว
-                        String strFood = object.getString("Food");
-                        String strSource = object.getString("Source");
-                        String strPrice = object.getString("Price");
+                        String strSubject = object.getString("DataSubject");
+                        String strImg = object.getString("DataIMG");
+                        String strType = object.getString("EventsType");
 
-                        objFoodTABLE.addNewFood(strFood, strSource, strPrice);
+                        objDataTABLE.addNewData(strSubject, strImg, strType);
                     }
 
                 }   // วิ่งวนตามจำนวน แถวใน JSON
@@ -282,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase objSQSqLiteDatabase = openOrCreateDatabase("Restaurant.db", MODE_PRIVATE, null);  // ทำตัวเชื่อมต่อกับ DB
         objSQSqLiteDatabase.delete("userTABLE", null, null);
         objSQSqLiteDatabase.delete("foodTABLE", null, null);
+        objSQSqLiteDatabase.delete("dataTABLE", null, null);
 
     }
 
@@ -289,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
 
         objUserTABLE.addNewUser("testUser", "testPass", "นนท์ ไชยกาล");
         objFoodTABLE.addNewFood("testFood", "Desktop", "99");
+        objDataTABLE.addNewData("Subjectนะ", "Image", "สอบตรง");
 
     }
 
@@ -296,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
         objUserTABLE = new UserTABLE(this);
         objFoodTABLE = new foodTABLE(this);
+        objDataTABLE = new DataTABLE(this);
 
     }
 

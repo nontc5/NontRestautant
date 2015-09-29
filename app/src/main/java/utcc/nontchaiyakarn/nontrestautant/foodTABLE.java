@@ -18,8 +18,7 @@ public class foodTABLE {
     public static final String COLUMN_FOOD = "Food";
     public static final String COLUMN_SOURCE = "Source";
     public static final String COLUMN_PRICE = "Price";
-
-
+    
 
 
     public foodTABLE(Context context) {

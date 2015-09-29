@@ -25,6 +25,12 @@ public class MyOpenHelper extends SQLiteOpenHelper{
             "Price text);";
 
 
+    private static final String CREATE_DATA = "create table dataTABLE (_id integer primary key, " +
+            "Subject text, " +
+            "IMG text, " +
+            "Type text);";
+
+
 
     public MyOpenHelper(Context context) {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,6 +43,7 @@ public class MyOpenHelper extends SQLiteOpenHelper{
 
         sqLiteDatabase.execSQL(CREATE_USER);
         sqLiteDatabase.execSQL(CREATE_FOOD);
+        sqLiteDatabase.execSQL(CREATE_DATA);
 
     }
 
