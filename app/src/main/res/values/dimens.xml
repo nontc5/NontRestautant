@@ -8,6 +8,8 @@
     <dimen name="price">35sp</dimen>
     <dimen name="food">20sp</dimen>
     <dimen name="login">150dp</dimen>
+    <dimen name="h1">20sp</dimen>
+    <dimen name="h2">15sp</dimen>
 
 
 </resources>
